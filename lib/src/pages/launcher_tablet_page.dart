@@ -1,21 +1,41 @@
+import 'package:demos_catalog/src/pages/slideshow_page.dart';
 import 'package:demos_catalog/src/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:demos_catalog/src/routes/routes.dart';
 import 'package:provider/provider.dart';
 
-class LauncherPage extends StatelessWidget {
+import '../models/layout_model.dart';
+
+class LauncherTabletPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
+    final appTheme = Provider.of<ThemeChanger>(context);
+    final layoutModel = Provider.of<LayoutModel>(context);
 
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: appTheme.colorScheme.secondary,
-          title: Text('diseños en flutter - teléfono'),
+          backgroundColor: appTheme.currentTheme.colorScheme.secondary,
+          title: Text('diseños en flutter - tablet'),
         ),
         drawer: _MenuPrincipal(),
-        body: _ListaOpciones());
+        body: //_ListaOpciones()
+            Row(
+          children: [
+            Container(
+                width: 300, height: double.infinity, child: _ListaOpciones()
+                //color: Colors.red,
+                ),
+            Container(
+              width: 1,
+              height: double.infinity,
+              color: (appTheme.darkTheme)
+                  ? Colors.grey
+                  : appTheme.currentTheme.colorScheme.secondary,
+            ),
+            Expanded(child: layoutModel.currentPage)
+          ],
+        ));
   }
 }
 
@@ -96,10 +116,14 @@ class _ListaOpciones extends StatelessWidget {
               trailing: Icon(Icons.chevron_right,
                   color: appTheme.colorScheme.secondary),
               onTap: () {
-                Navigator.push(
+                final layoutModel =
+                    Provider.of<LayoutModel>(context, listen: false);
+                layoutModel.currentPage = pageRoutes[i].page;
+
+                /* Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => pageRoutes[i].page));
+                        builder: (context) => pageRoutes[i].page)); */
               },
             ));
   }

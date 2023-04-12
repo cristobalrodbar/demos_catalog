@@ -9,15 +9,33 @@ import '../theme/theme.dart';
 class SlideshowPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    bool isLargeScreen;
+    if (MediaQuery.of(context).size.height > 500) {
+      isLargeScreen = true;
+    } else {
+      isLargeScreen = false;
+    }
+
     return Scaffold(
         // backgroundColor: Colors.purple,
         // body: MiSlideshow(),
-        body: Column(
-      children: <Widget>[
-        Expanded(child: MiSlideshow()),
-        Expanded(child: MiSlideshow())
-      ],
-    ));
+        body: (isLargeScreen)
+            ? Column(
+                children: [
+                  Expanded(child: MiSlideshow()),
+                  Expanded(child: MiSlideshow())
+                ],
+              )
+            : Row(
+                children: [
+                  Expanded(child: MiSlideshow()),
+                  Expanded(child: MiSlideshow())
+                ],
+              )
+        /* Column(
+      children: <Widget>[],
+    ) */
+        );
   }
 }
 

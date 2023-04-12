@@ -11,7 +11,7 @@ class PinterestPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ChangeNotifierProvider(
-      create: (_) => new _MenuModel(),
+      create: (_) => _MenuModel(),
       child: Scaffold(
         // body: PinterestMenu(),
         // body: PinterestGrid(),
@@ -29,46 +29,54 @@ class PinterestPage extends StatelessWidget {
 class _PinterestMenuLocation extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final widthPantalla = MediaQuery.of(context).size.width;
+    double widthPantalla = MediaQuery.of(context).size.width;
 
     final mostrar = Provider.of<_MenuModel>(context).mostrar;
     final appTheme = Provider.of<ThemeChanger>(context).currentTheme;
 
+    if (widthPantalla > 500) {
+      widthPantalla = widthPantalla - 300;
+    }
+
     return Positioned(
         bottom: 30,
         child: Container(
-          width: widthPantalla,
-          child: Align(
-            child: PinterestMenu(
-              mostrar: mostrar,
-              backgroundColor: appTheme.scaffoldBackgroundColor,
-              activeColor: appTheme.accentColor,
-              // inactiveColor: Colors.blue,
-              items: [
-                PinterestButton(
-                    icon: Icons.pie_chart,
-                    onPressed: () {
-                      print('Icon pie_chart');
-                    }),
-                PinterestButton(
-                    icon: Icons.search,
-                    onPressed: () {
-                      print('Icon search');
-                    }),
-                PinterestButton(
-                    icon: Icons.notifications,
-                    onPressed: () {
-                      print('Icon notifications');
-                    }),
-                PinterestButton(
-                    icon: Icons.supervised_user_circle,
-                    onPressed: () {
-                      print('Icon supervised_user_circle');
-                    }),
+            width: widthPantalla,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                //Spacer(),
+                PinterestMenu(
+                  mostrar: mostrar,
+                  backgroundColor: appTheme.scaffoldBackgroundColor,
+                  activeColor: appTheme.accentColor,
+                  // inactiveColor: Colors.blue,
+                  items: [
+                    PinterestButton(
+                        icon: Icons.pie_chart,
+                        onPressed: () {
+                          print('Icon pie_chart');
+                        }),
+                    PinterestButton(
+                        icon: Icons.search,
+                        onPressed: () {
+                          print('Icon search');
+                        }),
+                    PinterestButton(
+                        icon: Icons.notifications,
+                        onPressed: () {
+                          print('Icon notifications');
+                        }),
+                    PinterestButton(
+                        icon: Icons.supervised_user_circle,
+                        onPressed: () {
+                          print('Icon supervised_user_circle');
+                        }),
+                  ],
+                ),
+                //Spacer(),
               ],
-            ),
-          ),
-        ));
+            )));
   }
 }
 
@@ -105,13 +113,20 @@ class _PinterestGridState extends State<PinterestGrid> {
 
   @override
   Widget build(BuildContext context) {
+    int count;
+    if (MediaQuery.of(context).size.width > 300) {
+      count = 3;
+    } else {
+      count = 2;
+    }
+
     return StaggeredGridView.countBuilder(
       controller: controller,
-      crossAxisCount: 4,
+      crossAxisCount: count,
       itemCount: items.length,
       itemBuilder: (BuildContext context, int index) => _PinterestItem(index),
       staggeredTileBuilder: (int index) =>
-          new StaggeredTile.count(2, index.isEven ? 2 : 3),
+          StaggeredTile.count(1, index.isEven ? 1 : 2),
       mainAxisSpacing: 4.0,
       crossAxisSpacing: 4.0,
     );
